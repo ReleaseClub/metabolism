@@ -49,9 +49,10 @@ contract ReleaseClub is AccessControlEnumerable{
    }
    function addModerator(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
        _grantRole(MOD_ROLE, account);
+       _grantRole(MEMBER_ROLE, account);
    }
    
-   function RemoteModerator(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+   function RemoveModerator(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
        _revokeRole(MOD_ROLE, account);
    }
 
