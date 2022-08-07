@@ -25,39 +25,50 @@ contract ReleaseClub is AccessControlEnumerable{
         _setupRole(MOD_ROLE, creator);
         _setupRole(MEMBER_ROLE, creator);
     }
-    function viewReleases () public view returns (Release[] memory) {
+
+    function viewReleases() public view returns (Release[] memory) {
         return releases;
     }
 
-    function viewName () public view returns (string memory) {
+    function viewName() public view returns (string memory) {
         return clubName;
     }
-    function viewMembers() public view returns(address[] memory) {
+
+    function viewMembers() public view returns (address[] memory) {
         uint256 length = getRoleMemberCount(MEMBER_ROLE);
         address[] memory addresses = new address[](length);
         uint256 i;
         address member;
-        for(i=0;i<length;i++){
-            member = getRoleMember(MEMBER_ROLE,i);
-            addresses[i]=member;
+        for (i = 0; i < length; i++) {
+            member = getRoleMember(MEMBER_ROLE, i);
+            addresses[i] = member;
         }
         return addresses;
     }
-   function addMember(address account) external onlyRole (MOD_ROLE) {
-       _grantRole(MEMBER_ROLE,account);
-   }
-   function revokeMember(address account) external onlyRole (MOD_ROLE) {
-       _revokeRole(MEMBER_ROLE,account);
-   }
-   function addModerator(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
-       _grantRole(MOD_ROLE, account);
-       _grantRole(MEMBER_ROLE, account);
-   }
-   
-   function RemoveModerator(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
-       _revokeRole(MOD_ROLE, account);
-   }
 
+    function addMember(address account) external onlyRole(MOD_ROLE) {
+        _grantRole(MEMBER_ROLE, account);
+    }
+
+    function revokeMember(address account) external onlyRole(MOD_ROLE) {
+        _revokeRole(MEMBER_ROLE, account);
+    }
+
+    function addModerator(address account)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _grantRole(MOD_ROLE, account);
+        _grantRole(MEMBER_ROLE, account);
+    }
+
+    function RemoveModerator(address account)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _revokeRole(MOD_ROLE, account);
+    }
+    
    function addRelease(Release[] memory newReleases) public onlyRole (MEMBER_ROLE) {
        uint256 i = 0;
        while(i<newReleases.length)

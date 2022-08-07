@@ -1,14 +1,25 @@
-import { ethers } from "hardhat";
+import hre, { ethers } from "hardhat";
 
 async function main() {
 
-
+  const WAITING_UNTIL_DEPLOYMENT = 70000;    // in miliseconds
   const ClubFactory = await ethers.getContractFactory("ClubFactory");
   const factory = await ClubFactory.deploy();
-
   await factory.deployed();
 
-  console.log("Lock with 1 ETH deployed to:", factory.address);
+  console.log("ClubFactory contract deployed to:", factory.address);
+
+  // Verify the contract
+  const waitFor = (delay: number) =>
+    new Promise((resolve) =>
+      setTimeout(() => {
+        hre.run("verify:verify", {
+          address: factory.address,
+        });
+      }, delay)
+    );
+  await waitFor(WAITING_UNTIL_DEPLOYMENT);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
