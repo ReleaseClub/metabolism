@@ -3,12 +3,12 @@ import { ethers } from "hardhat";
 async function main() {
 
 
-  const ReleaseClub = await ethers.getContractFactory("ReleaseClub");
-  const club = await ReleaseClub.deploy("TESTCLUB");
+  const ClubFactory = await ethers.getContractFactory("ClubFactory");
+  const factory = await ClubFactory.deploy();
 
-  await club.deployed();
+  await factory.deployed();
 
-  console.log("Lock with 1 ETH deployed to:", club.address);
+  console.log("Lock with 1 ETH deployed to:", factory.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

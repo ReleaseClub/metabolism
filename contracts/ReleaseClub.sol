@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 // Import this file to use console.log
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -59,27 +58,13 @@ contract ReleaseClub is AccessControlEnumerable{
        _revokeRole(MOD_ROLE, account);
    }
 
-   function addRelease(Release[] memory newReleases, uint256 length) public onlyRole (MEMBER_ROLE) {
+   function addRelease(Release[] memory newReleases) public onlyRole (MEMBER_ROLE) {
        uint256 i = 0;
-       while(i<length)
+       while(i<newReleases.length)
        {
            releases.push(newReleases[i]);
            emit NewRelease(newReleases[i].tokenContract,newReleases[i].token);
            i++;
-           
        }
    }
-}
-contract ClubFactory is Ownable {
-
-    event ClubCreated(address ClubAddress, string clubName);
-
-    ReleaseClub[] public clubs;
-
-    function addClub(string calldata name) public payable {
-        ReleaseClub club = new ReleaseClub(name,msg.sender);
-        clubs.push(club);
-        emit ClubCreated(address(club),name);
-        
-    }
 }
