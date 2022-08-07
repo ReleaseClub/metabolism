@@ -9,19 +9,21 @@ struct Release {
     address tokenContract;
     address token;
 }
+
 contract ReleaseClub is AccessControlEnumerable{
    
+   event NewRelease(address contractAddress,address tokenAddress);
    Release[] public releases;
    bytes32 public constant MEMBER_ROLE = keccak256("MEMBER_ROLE");
    bytes32 public constant MOD_ROLE = keccak256("MOD_ROLE");
    string public clubName;
-    constructor(string memory name) {
+    constructor(string memory name,address creator) {
         // Grant the contract deployer the default admin role: it will be able
         // to grant and revoke any roles
         clubName=name;
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(MOD_ROLE,msg.sender);
-        _setupRole(MEMBER_ROLE,msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, creator);
+        _setupRole(MOD_ROLE, creator);
+        _setupRole(MEMBER_ROLE, creator);
     }
     function viewReleases () public view returns (Release[] memory) {
         return releases;
@@ -61,10 +63,22 @@ contract ReleaseClub is AccessControlEnumerable{
        while(i<length)
        {
            releases.push(newReleases[i]);
+           emit NewRelease(newReleases[i].tokenContract,newReleases[i].token);
            i++;
+           
        }
    }
+}
+contract ClubFactory is Ownable {
 
+    event ClubCreated(address ClubAddress, string clubName)
 
+    ReleaseClub[] memory clubs
 
+    function addClub(string name) public payable {
+        Club club = new ReleaseClub(name,msg.sender);
+        clubs.push(club);
+        emit ClubCreated(address(club),name);
+        
+    }
 }
