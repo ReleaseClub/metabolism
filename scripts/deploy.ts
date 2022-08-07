@@ -4,7 +4,7 @@ async function main() {
 
 
   const ReleaseClub = await ethers.getContractFactory("ReleaseClub");
-  const club = await ReleaseClub.deploy();
+  const club = await ReleaseClub.deploy("TESTCLUB");
 
   await club.deployed();
 

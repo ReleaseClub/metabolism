@@ -14,15 +14,21 @@ contract ReleaseClub is AccessControlEnumerable{
    Release[] public releases;
    bytes32 public constant MEMBER_ROLE = keccak256("MEMBER_ROLE");
    bytes32 public constant MOD_ROLE = keccak256("MOD_ROLE");
-    constructor() {
+   string public clubName;
+    constructor(string memory name) {
         // Grant the contract deployer the default admin role: it will be able
         // to grant and revoke any roles
+        clubName=name;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MOD_ROLE,msg.sender);
         _setupRole(MEMBER_ROLE,msg.sender);
     }
     function viewReleases () public view returns (Release[] memory) {
         return releases;
+    }
+
+    function viewName () public view returns (string memory) {
+        return clubName;
     }
     function viewMembers() public view returns(address[] memory) {
         uint256 length = getRoleMemberCount(MEMBER_ROLE);
