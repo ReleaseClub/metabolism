@@ -3,13 +3,13 @@ pragma solidity ^0.8.9;
 
 // Import this file to use console.log
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
 struct Release {
     address tokenContract;
     address token;
 }
-contract ReleaseClub is AccessControl{
+contract ReleaseClub is AccessControlEnumerable{
    
    Release[] public releases;
    bytes32 public constant MEMBER_ROLE = keccak256("MEMBER_ROLE");
@@ -19,6 +19,21 @@ contract ReleaseClub is AccessControl{
         // to grant and revoke any roles
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MOD_ROLE,msg.sender);
+        _setupRole(MEMBER_ROLE,msg.sender);
+    }
+    function viewReleases () public view returns (Release[] memory) {
+        return releases;
+    }
+    function viewMembers() public view returns(address[] memory) {
+        uint256 length = getRoleMemberCount(MEMBER_ROLE);
+        address[] memory addresses = new address[](length);
+        uint256 i;
+        address member;
+        for(i=0;i<length;i++){
+            member = getRoleMember(MEMBER_ROLE,i);
+            addresses[i]=member;
+        }
+        return addresses;
     }
    function addMember(address account) external onlyRole (MOD_ROLE) {
        _grantRole(MEMBER_ROLE,account);
@@ -42,5 +57,7 @@ contract ReleaseClub is AccessControl{
            i++;
        }
    }
+
+
 
 }
