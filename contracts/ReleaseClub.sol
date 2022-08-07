@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 struct Release {
     address tokenContract;
-    address token;
+    uint256 tokenID;
 }
 
 contract ReleaseClub is AccessControlEnumerable{
    
-   event NewRelease(address contractAddress,address tokenAddress);
+   event NewRelease(address tokenContract,uint256 tokenID);
    Release[] public releases;
    bytes32 public constant MEMBER_ROLE = keccak256("MEMBER_ROLE");
    bytes32 public constant MOD_ROLE = keccak256("MOD_ROLE");
@@ -74,7 +74,7 @@ contract ReleaseClub is AccessControlEnumerable{
        while(i<newReleases.length)
        {
            releases.push(newReleases[i]);
-           emit NewRelease(newReleases[i].tokenContract,newReleases[i].token);
+           emit NewRelease(newReleases[i].tokenContract,newReleases[i].tokenID);
            i++;
        }
    }
