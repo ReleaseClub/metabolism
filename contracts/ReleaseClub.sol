@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 // Import this file to use console.log
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 struct Release {
     address tokenContract;
@@ -71,12 +72,12 @@ contract ReleaseClub is AccessControlEnumerable{
 }
 contract ClubFactory is Ownable {
 
-    event ClubCreated(address ClubAddress, string clubName)
+    event ClubCreated(address ClubAddress, string clubName);
 
-    ReleaseClub[] memory clubs
+    ReleaseClub[] public clubs;
 
-    function addClub(string name) public payable {
-        Club club = new ReleaseClub(name,msg.sender);
+    function addClub(string calldata name) public payable {
+        ReleaseClub club = new ReleaseClub(name,msg.sender);
         clubs.push(club);
         emit ClubCreated(address(club),name);
         
