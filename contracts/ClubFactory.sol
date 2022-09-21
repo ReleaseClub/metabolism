@@ -4,12 +4,12 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "contracts/ReleaseClub.sol";
 
+
 contract ClubFactory is Ownable, Pausable {
     event ClubCreated(address ClubAddress, string clubName);
 
     address[] public clubs;
     mapping(address => address[]) public clubOwners;
-
     /**
      * @dev Pause the factory contract.
      * Disable the `addClub` function.
