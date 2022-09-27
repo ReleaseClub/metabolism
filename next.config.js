@@ -5,17 +5,9 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/index.html',
-        destination: '/',
-        permanent: true,
-      },
-    ]
-  },
-  async rewrites() {
-    return [
-      {
         source: '/',
-        destination: '/index.html',
+        destination: '/create',
+        permanent: true,
       },
     ]
   },
